@@ -1,54 +1,96 @@
-# React + TypeScript + Vite
+# 📊 Event Sort Benchmark
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project compares the performance and correctness of two sorting implementations for indoor event data, based on distance to a given user location.
 
-Currently, two official plugins are available:
+It includes:
+- ✅ Functional sorting logic for events based on venue/building/floor proximity
+- 🧪 Unit tests using **Vitest**
+- 🚀 Performance benchmarks via `perf_hooks`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🔧 Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. Clone the repository
+2. Install dependencies:
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 📦 Scripts
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+### ▶️ Development
+
+```bash
+npm run dev
 ```
+
+Starts the development server (Vite).
+
+---
+
+### 🧪 Run Tests
+
+```bash
+npm run vitest
+```
+
+Executes unit tests using **Vitest**, comparing both `sortEvents` and `sortEventsOptimized` implementations to ensure consistency.
+
+---
+
+### 📈 Run Benchmark
+
+```bash
+npm run benchmark
+```
+
+Runs the benchmark script `src/benchmark.ts`, comparing both implementations across different dataset sizes (e.g., 30, 500, 1000 events) with multiple runs.
+
+> Results will be printed in this format:
+```
+🔁 sortEvents | 30 events × 1000 runs → 15.530ms
+✅ sortEventsOptimized | 30 events × 1000 runs → 11.641ms
+🔁 sortEvents | 500 events × 1000 runs → 249.193ms
+✅ sortEventsOptimized | 500 events × 1000 runs → 207.329ms
+🔁 sortEvents | 1000 events × 1000 runs → 306.887ms
+✅ sortEventsOptimized | 1000 events × 1000 runs → 267.802ms
+```
+
+---
+
+## 🗂 Project Structure
+
+```
+src/
+├── lib/               # Sorting logic
+│   └── sort.ts
+├── mocks/             # Test and benchmark data (events, venues)
+├── benchmark.ts       # Performance comparison
+├── ...
+```
+
+---
+
+## 📦 Tech Stack
+
+- [React](https://react.dev/)
+- [Vite](https://vitejs.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vitest](https://vitest.dev/)
+- [@turf/distance](https://turfjs.org/) for geographic calculations
+
+---
+
+## 📌 Goal
+
+The goal of this project is to validate the performance benefit of avoiding repeated function creation (i.e., curried comparator functions) in high-frequency sort operations—especially when dealing with large datasets in UI applications.
+
+---
+
+## 📄 License
+
+MIT
